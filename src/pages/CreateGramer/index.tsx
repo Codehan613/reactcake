@@ -125,7 +125,7 @@ export default function CreateGramer() {
     feachData();
   }, []);
   const handelBack = () => {
-    navigator("/");
+    navigator("/englishTool/database");
   };
 
   return (

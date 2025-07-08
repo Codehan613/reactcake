@@ -30,9 +30,9 @@ export default function HomeIndex() {
   const handelOut = () => {
     // const user=useUserStore();
     // user.RESET();
-    navigate(`/englishTool/login`);
     localStorage.clear();
-    // window.location.reload();
+    // navigate(`/englishTool/login`);
+    window.location.reload();
   };
 
   return (
