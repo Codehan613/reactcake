@@ -6,7 +6,7 @@
   "homepage": "https://codehan613.github.io/englishTool/",
   "scripts": {
     "dev": "vite",
-    "build": " vite build & cp dist/index.html dist/404.html ",
+    "build": "vite build && cp dist/index.html dist/404.html",
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist"
