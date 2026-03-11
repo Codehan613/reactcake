@@ -1,49 +1,30 @@
 /*
- * @Date: 2025-02-24 15:51:13
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2025-05-15 14:55:28
- * @Description: 请填写简介
+ * @Description: Responsive Loading Component
  */
 interface LoadingProps {
   tipText?: string;
   loadingImage?: any;
 }
 import { Image } from "@heroui/react";
-import "@/assets/style/loading.scss";
+
 export default function LoadingNumber(props: LoadingProps) {
   const { tipText, loadingImage } = props;
   return (
-    <>
-      <div className="h-screen flex flex-col items-center justify-start w-screen pt-56">
-        {!loadingImage ? (
-          <div className="blobs">
-            <div className="blob-center"></div>
-            <div className="blob"></div>
-            <div className="blob"></div>
-            <div className="blob"></div>
-            <div className="blob"></div>
-            <div className="blob"></div>
-            <div className="blob"></div>
+    <div className="fixed inset-0 z-[9999] bg-[#faf9f6] flex flex-col items-center justify-center p-6">
+      {!loadingImage ? (
+        <div className="flex flex-col items-center">
+          {/* A more elegant, premium minimalist loader */}
+          <div className="w-12 h-12 border-2 border-stone-200 border-t-amber-600 rounded-full animate-spin mb-4"></div>
+          <div className="text-stone-400 font-serif italic text-sm tracking-widest animate-pulse">
+            Boulangerie de Luxe
           </div>
-        ) : (
-          <Image src={loadingImage} alt="loading" width="200" height="200"></Image>
-        )}
-        <div className="mt-6">{tipText}</div>
-      </div>
-      {/* <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-        <defs>
-          <filter id="goo">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-              result="goo"
-            />
-            <feBlend in="SourceGraphic" in2="goo" />
-          </filter>
-        </defs>
-      </svg> */}
-    </>
+        </div>
+      ) : (
+        <Image src={loadingImage} alt="loading" width="120" className="opacity-80" />
+      )}
+      {tipText && (
+        <div className="mt-4 text-stone-500 font-light text-sm">{tipText}</div>
+      )}
+    </div>
   );
 }

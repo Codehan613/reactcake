@@ -6,14 +6,9 @@
  * @Description: 路由表
  */
 
-import { ComponentType, lazy } from "react";
-
-import { LoginAction, LoginLoader, LogoutAction, RootLoader, ProtectedLoader } from "../permission";
-
-// eslint-disable-next-line react-refresh/only-export-components
-const BasicsLayout = lazy(() => import("@/layouts/basics"));
-
+import { ComponentType, lazy, createElement } from "react";
 import { RouteObject, Navigate } from "react-router-dom";
+
 type Module = {
   [keys in string]: () => Promise<{ default: ComponentType<any> }>;
 };
@@ -21,58 +16,35 @@ type Module = {
 /** 所有pages下页面文件 */
 const pagesModules = import.meta.glob("@/pages/*/index.tsx") as unknown as Module;
 /** 所有pages\*\router下嵌套页面文件 */
-const nestModules = import.meta.glob("@/pages/*/router/*/index.tsx") as unknown as Module;
-console.log(pagesModules);
+const nestModules = import.meta.glob(
+  "@/pages/*/router/*/index.tsx",
+) as unknown as Module;
+
 /** 所有页面文件 */
 export const modules: Module = {
   ...pagesModules,
   ...nestModules,
 };
-console.log(getPath("home"));
 
 const routes: RouteObject[] = [
   {
+    path: "/",
+    element: createElement(Navigate, { to: "/englishTool", replace: true }),
+  },
+  {
     id: "root",
     path: "/englishTool",
-    loader: RootLoader,
     Component: lazy(modules[getPath("home")]),
-
-    // children: [
-    //   {
-    //     index: true,
-    //     element: <Navigate to="/database" replace />,
-    //     // Component: lazy(modules[getPath("login")]),
-    //   },
-    // ],
   },
   {
-    path: "/englishTool/database",
-    loader: ProtectedLoader,
+    path: "/englishTool/catalog",
     Component: lazy(modules[getPath("home")]),
-    // children: [{ index: true, Component:  }],
   },
-  {
-    path: "/englishTool/createGramer",
-    loader: ProtectedLoader,
-    action: LoginAction,
-    Component: lazy(modules[getPath("CreateGramer")]),
-  },
+  // Keep other routes but remove loaders for simplicity in this demo
   {
     path: "/englishTool/login",
-    loader: LoginLoader,
-    action: LoginAction,
     Component: lazy(modules[getPath("login")]),
   },
-  // {
-  //   // logout路由只用来退出登录，不展示页面
-  //   path: "/logout",
-  //   action: LogoutAction,
-  //   Component: lazy(modules[getPath("error")]),
-  // },
-  // {
-  //   path: "*",
-  //   Component: lazy(modules[getPath("error")]),
-  // },
 ];
 
 export default routes;
