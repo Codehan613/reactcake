@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react-swc";
 import Autoprefixer from "autoprefixer";
 import PostCssPxToRem from "postcss-pxtorem";
 import tailwindcss from "tailwindcss";
+import { cloudflare } from "@cloudflare/vite-plugin";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   // loadEnv中三个参数 (mode,dir,base) -> 返回一个包含环境变量的对象
@@ -85,7 +86,7 @@ export default defineConfig(({ mode }) => {
   return {
     base: publicPath,
 
-    plugins: [react()],
+    plugins: [react(), cloudflare()],
 
     build: {
       outDir: outputDir,
