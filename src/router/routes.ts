@@ -29,20 +29,19 @@ export const modules: Module = {
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: createElement(Navigate, { to: "/englishTool", replace: true }),
+    element: createElement(Navigate, { to: "/home", replace: true }),
   },
   {
     id: "root",
-    path: "/englishTool",
+    path: "/home",
     Component: lazy(modules[getPath("home")]),
   },
   {
-    path: "/englishTool/catalog",
+    path: "/catalog",
     Component: lazy(modules[getPath("catalog")]),
   },
-  // Keep other routes but remove loaders for simplicity in this demo
   {
-    path: "/englishTool/login",
+    path: "/login",
     Component: lazy(modules[getPath("login")]),
   },
 ];

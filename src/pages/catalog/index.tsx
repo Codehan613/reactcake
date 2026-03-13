@@ -50,6 +50,64 @@ export default function Catalog() {
   };
 
   /* 点击分类定位 */
+  // const handleCategoryClick = (cat: string) => {
+  //   const container = rightScrollRef.current;
+  //   const el = sectionRefs.current[cat];
+
+  //   if (!container || !el) return;
+
+  //   setActiveCategory(cat);
+
+  //   isClickScrolling.current = true;
+
+  //   const containerRect = container.getBoundingClientRect();
+  //   const targetRect = el.getBoundingClientRect();
+
+  //   const offset = container.scrollTop + (targetRect.top - containerRect.top) - 10;
+
+  //   container.scrollTo({
+  //     top: offset,
+  //     behavior: "smooth",
+  //   });
+
+  //   setTimeout(() => {
+  //     isClickScrolling.current = false;
+  //   }, 400);
+  // };
+
+  // /* 右侧滚动联动分类 */
+  // useEffect(() => {
+  //   const container = rightScrollRef.current;
+
+  //   if (!container) return;
+
+  //   const handleScroll = () => {
+  //     if (isClickScrolling.current) return;
+
+  //     const scrollTop = container.scrollTop;
+
+  //     let current = categories[0];
+
+  //     for (const cat of categories) {
+  //       const el = sectionRefs.current[cat];
+
+  //       if (el && el.offsetTop - 30 <= scrollTop) {
+  //         current = cat;
+  //       }
+  //     }
+
+  //     setActiveCategory(current);
+  //   };
+
+  //   container.addEventListener("scroll", handleScroll);
+
+  //   return () => container.removeEventListener("scroll", handleScroll);
+  // }, []);
+  /* 点击分类定位 */
+  /* 清理滚动状态 */
+  // 改用多个 ref 来控制滚动状态
+  const isProgrammaticScroll = useRef(false);
+  const scrollEndTimer = useRef<NodeJS.Timeout | any>(null);
   const handleCategoryClick = (cat: string) => {
     const container = rightScrollRef.current;
     const el = sectionRefs.current[cat];
@@ -58,7 +116,7 @@ export default function Catalog() {
 
     setActiveCategory(cat);
 
-    isClickScrolling.current = true;
+    isProgrammaticScroll.current = true;
 
     const containerRect = container.getBoundingClientRect();
     const targetRect = el.getBoundingClientRect();
@@ -69,39 +127,46 @@ export default function Catalog() {
       top: offset,
       behavior: "smooth",
     });
-
-    // setTimeout(() => {
-    isClickScrolling.current = false;
-    // }, 400);
   };
 
-  /* 右侧滚动联动分类 */
   useEffect(() => {
     const container = rightScrollRef.current;
-
     if (!container) return;
 
     const handleScroll = () => {
-      if (isClickScrolling.current) return;
-
       const scrollTop = container.scrollTop;
+
+      // 如果是程序滚动，检测滚动结束
+      if (isProgrammaticScroll.current) {
+        clearTimeout(scrollEndTimer.current);
+
+        scrollEndTimer.current = setTimeout(() => {
+          isProgrammaticScroll.current = false;
+        }, 120);
+
+        return;
+      }
 
       let current = categories[0];
 
-      for (const cat of categories) {
+      for (let i = categories.length - 1; i >= 0; i--) {
+        const cat = categories[i];
         const el = sectionRefs.current[cat];
 
         if (el && el.offsetTop - 30 <= scrollTop) {
           current = cat;
+          break;
         }
       }
 
       setActiveCategory(current);
     };
 
-    container.addEventListener("scroll", handleScroll);
+    container.addEventListener("scroll", handleScroll, { passive: true });
 
-    return () => container.removeEventListener("scroll", handleScroll);
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
