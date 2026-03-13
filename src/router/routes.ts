@@ -38,7 +38,7 @@ const routes: RouteObject[] = [
   },
   {
     path: "/englishTool/catalog",
-    Component: lazy(modules[getPath("home")]),
+    Component: lazy(modules[getPath("catalog")]),
   },
   // Keep other routes but remove loaders for simplicity in this demo
   {
