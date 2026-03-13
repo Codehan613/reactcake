@@ -177,7 +177,7 @@ export default function Catalog() {
       <header className="px-3 pt-3 pb-2 bg-white shrink-0">
         <div className="flex items-center gap-2 mb-2">
           <button
-            onClick={() => navigate("/englishTool")}
+            onClick={() => navigate("/home")}
             className="flex items-center justify-center text-stone-800 shrink-0"
             style={{ width: 28, height: 28 }}>
             ←
@@ -274,7 +274,7 @@ export default function Catalog() {
                 className="py-2"
                 style={{ scrollMarginTop: 40 }}>
                 <h2
-                  className="font-bold text-stone-400 mb-2 sticky top-0 bg-white/90 backdrop-blur-sm z-10 py-1"
+                  className="font-bold text-stone-400 mb-2 sticky top-0 bg-white/90 backdrop-blur-sm z-20 py-1"
                   style={{ fontSize: "11px" }}>
                   {cat}
                 </h2>
